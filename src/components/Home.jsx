@@ -21,7 +21,7 @@ function Home() {
 
   const userDetails = async () => {
 
-    const res = await axios.get("http://localhost:3000/api/userdetails", {
+    const res = await axios.get("https://your-post-backend.onrender.com/api/userdetails", {
       headers: { Authorization: `Bearer ${token}` }
     });
     if (res.data.success) {
@@ -66,7 +66,7 @@ function Home() {
         const formdata = new FormData();
         formdata.append('profileImage', profileImage)
 
-        const res = await axios.post('http://localhost:3000/api/editpicture', formdata, {
+        const res = await axios.post('https://your-post-backend.onrender.com/api/editpicture', formdata, {
           headers: {
             'Content-Type': 'multipart/form-data',
             Authorization: `Bearer ${token}`,
@@ -90,7 +90,7 @@ function Home() {
   }, [profileImage])
   const deletePost = async (id)=>{
     try {
-      const res = await axios.post("http://localhost:3000/api/deletePost",{id},{
+      const res = await axios.post("https://your-post-backend.onrender.com/api/deletePost",{id},{
         headers:{
            Authorization: `Bearer ${token}`
         }
@@ -118,7 +118,7 @@ function Home() {
   return (
     <div className=' w-full h-auto mb-12 '>
       <div className='relative bg-zinc-900 w-full flex flex-col items-center justify-center  h-72' >
-        <div className='flex flex-col items-center  '><img src={`http://localhost:3000${editImage}`} alt='pic' className='object-contain rounded-full  bg-white w-24 h-24' />
+        <div className='flex flex-col items-center  '><img src={`https://your-post-backend.onrender.com${editImage}`} alt='pic' className='object-contain rounded-full  bg-white w-24 h-24' />
           <button onClick={updateProfilePicture} className='px-1 py-1 text-white bg-sky-400 font-bold text-xs'>Edit Picture</button>
           <input className='hidden' name='profileImage' onChange={(e) => setProfileImage(e.target.files[0])} ref={reference} type="file" />
         </div>
@@ -169,7 +169,7 @@ function Home() {
     <div key={post._id} className="overflow-hidden rounded-lg shadow-lg bg-gray-100">
       <div className="w-full h-64 flex items-center justify-center bg-gray-200">
         <img
-          src={`http://localhost:3000${post.postImage}`}
+          src={`https://your-post-backend.onrender.com${post.postImage}`}
           alt="post"
           className="w-full h-full object-contain"
         />

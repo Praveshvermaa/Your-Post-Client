@@ -9,7 +9,7 @@ const ProfileViewer = () => {
  
     const fetchVisitors = async () => {
         try {
-          const response = await axios.get("http://localhost:3000/api/profileviewer",{
+          const response = await axios.get("https://your-post-backend.onrender.com/api/profileviewer",{
             headers:{
                 Authorization: `Bearer ${token}`
              }
@@ -56,7 +56,7 @@ const ProfileViewer = () => {
                 className="flex items-center space-x-4 bg-gray-50 hover:bg-gray-500 p-4 rounded-lg shadow transition-transform duration-300 transform hover:scale-105"
               >
                 <img
-                  src={`http://localhost:3000${visitor.profile_picture}`}
+                  src={`https://your-post-backend.onrender.com${visitor.profile_picture}`}
                   alt={visitor.username}
                   className="w-12 h-12 rounded-full border-2 border-blue-500"
                 />

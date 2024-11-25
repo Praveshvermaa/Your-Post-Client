@@ -18,7 +18,7 @@ function Upload() {
        
         // console.log(formData.get('postImage'))
 
-        const res = await axios.post("http://localhost:3000/api/upload", formData, {
+        const res = await axios.post("https://your-post-backend.onrender.com/api/upload", formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
                 Authorization:`Bearer ${token}`

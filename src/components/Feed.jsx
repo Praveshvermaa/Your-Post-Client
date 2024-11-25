@@ -10,7 +10,7 @@ const FeedPage = () => {
   // Function to fetch posts from the backend
   const fetchPosts = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/api/allposts');
+      const response = await axios.get('https://your-post-backend.onrender.com/api/allposts');
       setPosts(response.data.posts);
       
       setLoading(false);
@@ -37,7 +37,7 @@ const FeedPage = () => {
             <div key={post._id} className="overflow-hidden rounded-lg shadow-lg bg-gray-100">
               <div className="w-full h-64 flex items-center justify-center bg-gray-200">
                 <img
-                  src={`http://localhost:3000${post.postImage}`}
+                  src={`https://your-post-backend.onrender.com${post.postImage}`}
                   alt="post"
                   className="w-full h-full object-contain"
                 />
