@@ -9,7 +9,7 @@ const ProfileViewer = () => {
  
     const fetchVisitors = async () => {
         try {
-          const response = await axios.get("http://localhost:3000/api/profileviewer",{
+          const response = await axios.get("https://your-post-backend.onrender.com/api/profileviewer",{
             headers:{
                 Authorization: `Bearer ${token}`
              }

@@ -22,7 +22,7 @@ function Home() {
 
   const userDetails = async () => {
 
-    const res = await axios.get("http://localhost:3000/api/userdetails", {
+    const res = await axios.get("https://your-post-backend.onrender.com/api/userdetails", {
       headers: { Authorization: `Bearer ${token}` }
     });
     if (res.data.success) {
@@ -67,7 +67,7 @@ function Home() {
         const formdata = new FormData();
         formdata.append('profileImage', profileImage)
 
-        const res = await axios.post('http://localhost:3000/api/editpicture', formdata, {
+        const res = await axios.post('https://your-post-backend.onrender.com/api/editpicture', formdata, {
           headers: {
             'Content-Type': 'multipart/form-data',
             Authorization: `Bearer ${token}`,
@@ -92,7 +92,7 @@ function Home() {
   const deletePost = async (id)=>{
     try {
       setDeleteLoading(false);
-      const res = await axios.post("http://localhost:3000/api/deletePost",{id},{
+      const res = await axios.post("https://your-post-backend.onrender.com/api/deletePost",{id},{
         headers:{
            Authorization: `Bearer ${token}`
         }
@@ -169,9 +169,8 @@ function Home() {
   loading ? 
     <p className="text-center mt-2 text-lg">Loading posts...</p>
   : <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mt-4 gap-6">
-    
-    
-  {posts && posts.map((post) =>(
+    <div>
+ {posts && posts.map((post) =>(
     <div key={post._id} className="overflow-hidden rounded-lg shadow-lg bg-gray-100">
       <div className="w-full h-64 flex items-center justify-center bg-gray-200">
         <img
@@ -189,6 +188,10 @@ function Home() {
       </div>
     </div>
   ))}
+    </div>
+    
+    
+ 
 </div>
 }
      

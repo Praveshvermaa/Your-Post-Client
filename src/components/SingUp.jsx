@@ -36,7 +36,7 @@ function singup(){
       }
       
       
-      const response = await axios.post('http://localhost:3000/api/auth/register',{username,name,email,password});
+      const response = await axios.post('https://your-post-backend.onrender.com/api/auth/register',{username,name,email,password});
       if(response.data.success){
         alert(response.data.message);
         

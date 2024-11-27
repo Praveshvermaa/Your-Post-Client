@@ -10,7 +10,7 @@ const FeedPage = () => {
   // Function to fetch posts from the backend
   const fetchPosts = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/api/allposts');
+      const response = await axios.get('https://your-post-backend.onrender.com/api/allposts');
       setPosts(response.data.posts);
       
       setLoading(false);
@@ -26,7 +26,7 @@ const FeedPage = () => {
   }, []);
 
   return (
-    <div className="  mb-12">
+    <div className="bg-gray-400 h-screen  mb-12">
       <h1 className="text-2xl font-bold text-center mb-6">Feed</h1>
 
       {loading ? (
