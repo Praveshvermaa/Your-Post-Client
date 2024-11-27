@@ -4,11 +4,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 function Upload() {
+    const[loading,setLoading] = useState(false)
     const [file, setFile] = useState();
     const [caption, setCaption] = useState();
     const navigate = useNavigate();
     const token = localStorage.getItem('token')
     const onSubmit = async (e) => {
+        setLoading(true);
         e.preventDefault();
 
         const formData = new FormData();
@@ -18,13 +20,14 @@ function Upload() {
        
         // console.log(formData.get('postImage'))
 
-        const res = await axios.post("https://your-post-backend.onrender.com/api/upload", formData, {
+        const res = await axios.post("http://localhost:3000/api/upload", formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
                 Authorization:`Bearer ${token}`
             },
         })
-       
+
+       setLoading(false);
             navigate('/')
         
 
@@ -33,7 +36,9 @@ function Upload() {
 
     return (
         <div className='w-full h-[90vh] bg-blue-950 flex justify-center items-center'>
+           
             <form onSubmit={onSubmit} className='bg-white w-96 p-8 rounded-lg shadow-lg flex flex-col justify-between'>
+            { loading?  <div className='text-red-600 font-semibold text-sm text-center'>Please wait ! file is uploading </div>:""}
                 <h2 className='text-xl font-bold text-center mb-4'>Upload Your Post</h2>
                 
                 <div className='mb-4'>
@@ -60,10 +65,9 @@ function Upload() {
                 </div>
                 
                 <div>
-                    <input
-                        type="submit"
-                        className='w-full py-2 rounded bg-sky-500 text-white font-semibold active:opacity-50 hover:bg-sky-600 transition duration-200'
-                    />
+                    <button  className='w-full py-2 rounded bg-sky-500 text-white font-semibold active:opacity-50 hover:bg-sky-600 transition duration-200'
+                    >{loading?"loading":"submit"} </button>
+                    
                 </div>
                 {/* <Link className='text-center text-blue-600 border-b border-blue-500' to={"/aigenerator"}>Generate using AI</Link>   */}
             </form>

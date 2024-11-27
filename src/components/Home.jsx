@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { AiFillDelete } from 'react-icons/ai';
 
 function Home() {
+  const[deleteLoading,setDeleteLoading] = useState(true);
   const [profileImage, setProfileImage] = useState();
   const [editImage, seteditImage] = useState();
   const [posts, setPosts] = useState([]);
@@ -21,7 +22,7 @@ function Home() {
 
   const userDetails = async () => {
 
-    const res = await axios.get("https://your-post-backend.onrender.com/api/userdetails", {
+    const res = await axios.get("http://localhost:3000/api/userdetails", {
       headers: { Authorization: `Bearer ${token}` }
     });
     if (res.data.success) {
@@ -66,7 +67,7 @@ function Home() {
         const formdata = new FormData();
         formdata.append('profileImage', profileImage)
 
-        const res = await axios.post('https://your-post-backend.onrender.com/api/editpicture', formdata, {
+        const res = await axios.post('http://localhost:3000/api/editpicture', formdata, {
           headers: {
             'Content-Type': 'multipart/form-data',
             Authorization: `Bearer ${token}`,
@@ -90,14 +91,15 @@ function Home() {
   }, [profileImage])
   const deletePost = async (id)=>{
     try {
-      const res = await axios.post("https://your-post-backend.onrender.com/api/deletePost",{id},{
+      setDeleteLoading(false);
+      const res = await axios.post("http://localhost:3000/api/deletePost",{id},{
         headers:{
            Authorization: `Bearer ${token}`
         }
         
       })
-      console.log(res.data);
-      
+     
+      setDeleteLoading(true);
       if(res.data.success){
         setPosts(res.data.updateduser.posts);
       }
@@ -118,7 +120,7 @@ function Home() {
   return (
     <div className=' w-full h-auto mb-12 '>
       <div className='relative bg-zinc-900 w-full flex flex-col items-center justify-center  h-72' >
-        <div className='flex flex-col items-center  '><img src={`https://your-post-backend.onrender.com${editImage}`} alt='pic' className='object-contain rounded-full  bg-white w-24 h-24' />
+        <div className='flex flex-col items-center  '><img src={`${editImage}`} alt='pic' className='object-contain rounded-full  bg-white w-24 h-24' />
           <button onClick={updateProfilePicture} className='px-1 py-1 text-white bg-sky-400 font-bold text-xs'>Edit Picture</button>
           <input className='hidden' name='profileImage' onChange={(e) => setProfileImage(e.target.files[0])} ref={reference} type="file" />
         </div>
@@ -160,16 +162,20 @@ function Home() {
        
 
       </div>
+      { deleteLoading?<div></div>:<div className='text-red-600 font-semibold text-sm text-center'>Please wait ! file is deleting </div>}
+
 
 {
   loading ? 
     <p className="text-center mt-2 text-lg">Loading posts...</p>
   : <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mt-4 gap-6">
+    
+    
   {posts && posts.map((post) =>(
     <div key={post._id} className="overflow-hidden rounded-lg shadow-lg bg-gray-100">
       <div className="w-full h-64 flex items-center justify-center bg-gray-200">
         <img
-          src={`https://your-post-backend.onrender.com${post.postImage}`}
+          src={post.postImage}
           alt="post"
           className="w-full h-full object-contain"
         />
@@ -177,7 +183,7 @@ function Home() {
       <div className="p-4">
         <div className='flex justify-between'>
           <span className="text-sm text-gray-800 font-semibold mb-2">-: {post.postCaption}</span>
-          <span onClick={()=>deletePost(post._id)} className='cursor-pointer text-red-500 size-8'><AiFillDelete /></span>
+          <span onClick={()=>deletePost(post._id)} className='cursor-pointer text-red-500 size-8'>{deleteLoading?<AiFillDelete />:"..."}</span>
         </div>
         <p className="text-xs text-gray-500">{new Date(post.CreatedAt).toLocaleString()}</p>
       </div>

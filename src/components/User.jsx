@@ -8,7 +8,7 @@ function User() {
     const [profileOwner,setProfileOwner] = useState()
     const viewerIdSender = async()=>{
         try {
-            const res = await axios.post("https://your-post-backend.onrender.com/api/profileveiwer",{profileOwnerId:userId},{
+            const res = await axios.post("http://localhost:3000/api/profileveiwer",{profileOwnerId:userId},{
                     headers: { Authorization: `Bearer ${token}` }
                   }
             )
@@ -24,7 +24,7 @@ function User() {
     }
     const profileOwnerDetails = async()=>{
         try {
-            const res = await axios.post('https://your-post-backend.onrender.com/api/profileownerdetails',{profileOwnerId:userId});
+            const res = await axios.post('http://localhost:3000/api/profileownerdetails',{profileOwnerId:userId});
             if(res.data.success){
                 setProfileOwner(res.data.profileOwner);
             }
@@ -47,7 +47,7 @@ function User() {
     
     <div className="flex flex-col items-center p-6  justify-between bg-gray-800 text-white">
       <img 
-        src={`https://your-post-backend.onrender.com${profileOwner?.profile_picture}`}
+        src={`${profileOwner?.profile_picture}`}
         alt="Profile"
         className="object-contain rounded-full  bg-white w-24 h-24"
       />
@@ -61,7 +61,7 @@ function User() {
           <div key={post._id} className="overflow-hidden rounded-lg shadow-lg bg-gray-100">
             <div className="w-full h-64 flex items-center justify-center bg-gray-200">
               <img
-                src={`https://your-post-backend.onrender.com${post.postImage}`}
+                src={`${post.postImage}`}
                 alt="post"
                 className="w-full h-full object-contain"
               />
