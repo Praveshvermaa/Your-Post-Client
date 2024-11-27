@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState,useEffect } from "react"
 import { Link } from "react-router-dom"
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -51,6 +51,14 @@ function singup(){
     }
 
   }
+  useEffect(()=>{
+    const func = async()=>{
+      const res = await axios.get("https://your-post-backend.onrender.com");
+      console.log(res.data);
+      
+    }
+    func();
+  },[])
   
     return (
         <div className='bg-violet-800 w-full h-[90vh] flex justify-center items-center overflow-hidden'>

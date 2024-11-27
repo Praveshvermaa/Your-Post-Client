@@ -169,7 +169,7 @@ function Home() {
   loading ? 
     <p className="text-center mt-2 text-lg">Loading posts...</p>
   : <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mt-4 gap-6">
-    <div>
+    
  {posts && posts.map((post) =>(
     <div key={post._id} className="overflow-hidden rounded-lg shadow-lg bg-gray-100">
       <div className="w-full h-64 flex items-center justify-center bg-gray-200">
@@ -192,7 +192,7 @@ function Home() {
     
     
  
-</div>
+
 }
      
 

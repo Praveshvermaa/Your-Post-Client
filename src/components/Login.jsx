@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {Link, replace} from 'react-router-dom'
 import { useNavigate } from 'react-router-dom';
 
@@ -32,6 +32,14 @@ function Login() {
     setLoading(false);
 
   }
+  useEffect(()=>{
+    const func = async()=>{
+      const res = await axios.get("https://your-post-backend.onrender.com");
+      console.log(res.data);
+      
+    }
+    func();
+  },[])
   return (
     <div className='bg-violet-800 w-full h-[90vh] flex justify-center items-center overflow-hidden'>
       <div className='bg-white outline-none shadow-2xl h-1/2  md:h-3/4 md:w-1/4 p-2 rounded-md flex items-center flex-col justify-evenly'>
