@@ -24,7 +24,7 @@ function User() {
     }
     const profileOwnerDetails = async()=>{
         try {
-            const res = await axios.post('http://localhost:3000/api/profileownerdetails',{profileOwnerId:userId});
+            const res = await axios.post('https://your-post-backend.onrender.com/api/profileownerdetails',{profileOwnerId:userId});
             if(res.data.success){
                 setProfileOwner(res.data.profileOwner);
             }
