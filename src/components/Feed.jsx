@@ -26,7 +26,7 @@ const FeedPage = () => {
   }, []);
 
   return (
-    <div className="bg-gray-400 h-screen  mb-12">
+    <div className="bg-gray-400 h-auto  mb-12">
       <h1 className="text-2xl font-bold text-center mb-6">Feed</h1>
 
       {loading ? (
