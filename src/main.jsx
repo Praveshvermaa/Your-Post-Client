@@ -12,6 +12,7 @@ import Feed from './components/Feed.jsx'
 import AIGenerate from './components/AIGenerate.jsx'
 import User from './components/User.jsx'
 import ProfileViewer from './components/ProfileViewer.jsx'
+import Dashboard from './components/DashBoard.jsx'
 
 
 const router = createBrowserRouter(
@@ -25,6 +26,7 @@ const router = createBrowserRouter(
       <Route path='aigenerator' element={<AIGenerate/>}/> 
       <Route path='user/:userId' element={<User/>}/>
       <Route path='profileviewer' element={<ProfileViewer/>}/>
+      <Route path='dashboard' element={<Dashboard/>}/>
 
     </Route>
   )

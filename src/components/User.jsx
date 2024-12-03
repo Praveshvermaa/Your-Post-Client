@@ -8,7 +8,7 @@ function User() {
     const [profileOwner,setProfileOwner] = useState()
     const viewerIdSender = async()=>{
         try {
-            const res = await axios.post("https://your-post-backend.onrender.com/api/profileveiwer",{profileOwnerId:userId},{
+            const res = await axios.post("https://your-post-backend.onrender.com/profileveiwer",{profileOwnerId:userId},{
                     headers: { Authorization: `Bearer ${token}` }
                   }
             )

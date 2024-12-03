@@ -129,12 +129,14 @@ function Home() {
         <div className='flex justify-center gap-3'>
           
           <Link to={"/upload"} className='bg-sky-400 text-white rounded-sm px-2 py-1 font-bold m-1 outline-none'>Upload Post </Link>
+          <Link to={"/dashboard"} className='bg-sky-400 text-white rounded-sm px-2 py-1 font-bold m-1 outline-none'>Sentiment analysis Dashboard</Link>
+
         </div>
         <div>
         <button   className="text-3xl absolute top-5 right-12 text-white  focus:outline-none hover:text-gray-400"
           onClick={handleMenuToggle}>≡</button>
            {isMenuOpen && (
-        <div className="absolute top-12 right-6  font-bold  text-white">
+        <div className="absolute top-12 right-4  font-bold  text-white">
           <ul className="flex flex-col items-center space-y-2 py-4">
             <li
               className="cursor-pointer text-white hover:text-gray-400"
@@ -167,7 +169,7 @@ function Home() {
 
 {
   loading ? 
-    <p className="text-center mt-2 text-lg">Loading posts...</p>
+    <p className="text-center mt-6 text-lg">Loading posts...</p>
   : <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mt-4 gap-6">
     
  {posts && posts.map((post) =>(
