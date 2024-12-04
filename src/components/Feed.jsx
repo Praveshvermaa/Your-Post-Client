@@ -156,18 +156,19 @@ const FeedPage = () => {
   <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-end lg:items-center justify-center">
     <div className="w-full lg:w-1/2 bg-white rounded-t-2xl lg:rounded-md p-4 max-h-[50%] lg:max-h-[80%] flex flex-col">
       {/* Close Button */}
-      <button
-        onClick={handleCloseModal}
-        className="absolute top-4 right-[50%] text-lg text-black font-bold bg-black"
-      >
-        ✖
-      </button>
+      
 
       {/* Comments List */}
-      <div className="overflow-y-auto flex-grow mb-4">
-        <h3 className="text-lg text-center text-slate-800 font-bold mb-2">
+      <div className="relative overflow-y-auto flex-grow mb-4">
+        <h3 className="text-lg text-center  inline text-slate-800 font-bold mb-2">
           Comments for this post:
         </h3>
+        <span
+        onClick={handleCloseModal}
+        className="absolute cursor-pointer right-2 text-lg  outline-none  text-white font-bold "
+      >
+        ✖
+      </span>
         {comments.length ? (
           comments.map((comment, index) => (
             <div
