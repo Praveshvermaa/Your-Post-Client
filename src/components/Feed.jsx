@@ -165,7 +165,7 @@ const FeedPage = () => {
         </h3>
         <span
         onClick={handleCloseModal}
-        className="absolute cursor-pointer ml-2 text-lg  outline-none  text-black font-bold "
+        className="absolute cursor-pointer ml-2 md:right-2 text-lg  outline-none  text-black font-bold "
       >
         ✖
       </span>
