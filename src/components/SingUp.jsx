@@ -65,14 +65,14 @@ function singup(){
       <div className='bg-white outline-none shadow-2xl h-1/2  md:h-3/4 md:w-1/4 p-2 rounded-md flex items-center flex-col justify-evenly'>
       { loading?<div className='text-red-600 font-semibold text-sm text-center'>Please wait ! it will take time</div>:""}
 
-      <h3 className='text-lg font-bold text-slate-900'>Sing Up</h3>
+      <h3 className='text-lg font-bold text-slate-900'>Sign Up</h3>
      
       <form onSubmit={onSubmit} className='flex flex-col items-center gap-3'>
         <input onChange={(e)=>setUserName(e.target.value)} value={username} type="text" className='border-b-2 p-2  border-b-slate-900 ' placeholder='Username' />
         <input  onChange={(e)=>setName(e.target.value)} value={name} type="text" className='border-b-2 p-2  border-b-slate-900 ' placeholder='Name' />
         <input onChange={(e)=>setEmail(e.target.value)} value={email} type="text" className='border-b-2 p-2  border-b-slate-900 ' placeholder='Email' />
         <input onChange={(e)=>setPassword(e.target.value)} value={password} type="password" placeholder='Password' className='border-b-2 p-2 border-b-slate-900' />
-        <button className='w-full bg-purple-500 p-1 text-white font'>{loading?"loading":"Sing Up"}</button>
+        <button className='w-full bg-purple-500 p-1 text-white font'>{loading?"loading":"Sign Up"}</button>
       </form>
       <div>
        <p>Already have an account? <Link to={"/login"} className='text-blue-600 font-bold'>Login</Link> </p>
