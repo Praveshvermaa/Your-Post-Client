@@ -52,7 +52,7 @@ function Login() {
         <button className='w-full hover:opacity-40 bg-purple-500 p-1 text-white font'>{loading?"loading":"Login"}</button>
       </form>
       <div>
-       <p>Don't have an account? <Link to={"/singup"} className='text-blue-600 font-bold'>Sing UP</Link> </p>
+       <p>Don't have an account? <Link to={"/singup"} className='text-blue-600 font-bold'>Sign UP</Link> </p>
       </div>
 
       </div>
