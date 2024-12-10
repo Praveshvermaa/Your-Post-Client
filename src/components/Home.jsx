@@ -118,18 +118,18 @@ function Home() {
 
 
   return (
-    <div className=' w-full h-auto mb-12 '>
+    <div className=' w-full bg-gray-400 h-auto mb-12 '>
       <div className='relative bg-zinc-900 w-full flex flex-col items-center justify-center  h-72' >
         <div className='flex flex-col items-center  '><img src={`${editImage}`} alt='pic' className='object-contain rounded-full  bg-white w-24 h-24' />
-          <button onClick={updateProfilePicture} className='px-1 py-1 text-white bg-sky-400 font-bold text-xs'>Edit Picture</button>
+          <button onClick={updateProfilePicture} className='px-1 py-1 text-white bg-sky-400 font-bold  text-xs'>Edit Picture</button>
           <input className='hidden' name='profileImage' onChange={(e) => setProfileImage(e.target.files[0])} ref={reference} type="file" />
         </div>
         <div className='text-white text-center text-2xl font-bold'>@{userdetails?.username}</div>
         <div className='text-white text-center'>{userdetails?.email}</div>
         <div className='flex justify-center gap-3'>
           
-          <Link to={"/upload"} className='bg-sky-400 text-white rounded-sm px-2 py-1 font-bold m-1 outline-none'>Upload Post </Link>
-          <Link to={"/dashboard"} className='bg-sky-400 text-white rounded-sm px-2 py-1 font-bold m-1 outline-none'>Sentiment analysis Dashboard</Link>
+          <Link to={"/upload"} className='bg-sky-400 text-white rounded-sm px-2 py-1 font-bold m-1 outline-none'>Create Post </Link>
+          {/* <Link to={"/dashboard"} className='bg-sky-400 text-white rounded-sm px-2 py-1 font-bold m-1 outline-none'>Sentiment analysis Dashboard</Link> */}
 
         </div>
         <div>
@@ -138,6 +138,15 @@ function Home() {
            {isMenuOpen && (
         <div className="absolute top-12 right-4  font-bold  text-white">
           <ul className="flex flex-col items-center space-y-2 py-4">
+          <li
+              className="cursor-pointer text-white hover:text-gray-400"
+              onClick={() => {
+                navigate("/dashboard");
+                setIsMenuOpen(false); // Close menu after navigating
+              }}
+            >
+              Dashboard
+            </li>
             <li
               className="cursor-pointer text-white hover:text-gray-400"
               onClick={() => {
@@ -170,23 +179,23 @@ function Home() {
 {
   loading ? 
     <p className="text-center mt-6 text-lg">Loading posts...</p>
-  : <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mt-4 gap-6">
+  : <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mt-4 bg-gray-400 gap-6">
     
  {posts && posts.map((post) =>(
-    <div key={post._id} className="overflow-hidden rounded-lg shadow-lg bg-gray-100">
-      <div className="w-full h-64 flex items-center justify-center bg-gray-200">
+    <div key={post._id} className="overflow-hidden mx-2  rounded-xl shadow-lg bg-slate-900">
+      <div className="w-full h-64 flex items-center justify-center bg-slate-900">
         <img
           src={post.postImage}
           alt="post"
-          className="w-full h-full object-contain"
+          className="w-full h-full object-contain rounded-lg"
         />
       </div>
       <div className="p-4">
         <div className='flex justify-between'>
-          <span className="text-sm text-gray-800 font-semibold mb-2">-: {post.postCaption}</span>
+          <span className="text-sm text-white font-semibold mb-2">-: {post.postCaption}</span>
           <span onClick={()=>deletePost(post._id)} className='cursor-pointer text-red-500 size-8'>{deleteLoading?<AiFillDelete />:"..."}</span>
         </div>
-        <p className="text-xs text-gray-500">{new Date(post.CreatedAt).toLocaleString()}</p>
+        <p className="text-xs text-gray-300">{new Date(post.CreatedAt).toLocaleString()}</p>
       </div>
     </div>
   ))}

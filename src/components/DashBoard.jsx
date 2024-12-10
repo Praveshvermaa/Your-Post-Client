@@ -48,7 +48,7 @@ const Dashboard = () => {
             key={post._id}
             className="p-4 bg-white shadow-md rounded-md border"
           >
-            <h3 className="font-semibold text-black text-lg border-b-2">{post.postCaption} post Impression</h3>
+            <h3 className="font-semibold text-black text-lg border-b-2">{post.postCaption} : post Impression</h3>
             <p>
               Sentiment Score & Impression:{" "}
               <span

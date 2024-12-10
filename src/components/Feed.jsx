@@ -112,9 +112,9 @@ const FeedPage = () => {
             posts.map((post) => (
               <div
                 key={post._id}
-                className="overflow-hidden rounded-lg shadow-lg bg-gray-100"
+                className="overflow-hidden rounded-xl mx-2 shadow-lg bg-slate-900"
               >
-                <div className="w-full h-64 flex items-center justify-center bg-gray-200">
+                <div className="w-full h-64 flex items-center justify-center bg-slate-900">
                   <img
                     src={`${post.postImage}`}
                     alt="post"
@@ -122,7 +122,7 @@ const FeedPage = () => {
                   />
                 </div>
                 <div className="p-4">
-                  <p className="text-sm text-gray-800 font-semibold mb-2">
+                  <p className="text-sm text-white font-semibold mb-2">
                     <Link
                       to={`/user/${post.userId._id}`}
                       className="text-blue-500 cursor-pointer"

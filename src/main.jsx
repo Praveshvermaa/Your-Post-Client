@@ -5,7 +5,7 @@ import './index.css'
 import { createBrowserRouter,Route,createRoutesFromElements,RouterProvider } from 'react-router-dom'
 import Layout from './components/Layout.jsx'
 import Login from './components/Login.jsx'
-import SingUp from './components/SingUp.jsx'
+import SignUp from './components/SingUp.jsx'
 import Home from './components/Home.jsx'
 import Upload from './components/Upload.jsx'
 import Feed from './components/Feed.jsx'
@@ -20,7 +20,7 @@ const router = createBrowserRouter(
     <Route path='/' element={<Layout/>}>
       <Route path='' element={<Home/>}/>
       <Route path='login' element={<Login/>}/>
-      <Route path='singup' element={<SingUp/>}/>
+      <Route path='signup' element={<SignUp/>}/>
       <Route path='upload' element={<Upload/>}   />
       <Route path='feed' element={<Feed/>}/> 
       <Route path='aigenerator' element={<AIGenerate/>}/> 

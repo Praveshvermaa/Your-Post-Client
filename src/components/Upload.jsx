@@ -35,7 +35,7 @@ function Upload() {
     }
 
     return (
-        <div className='w-full h-[90vh] bg-blue-950 flex justify-center items-center'>
+        <div className='w-full h-screen bg-slate-900 flex justify-center items-center'>
            
             <form onSubmit={onSubmit} className='bg-white w-96 p-8 rounded-lg shadow-lg flex flex-col justify-between'>
             { loading?  <div className='text-red-600 font-semibold text-sm text-center'>Please wait ! file is uploading </div>:""}

@@ -41,7 +41,7 @@ function Login() {
     func();
   },[])
   return (
-    <div className='bg-violet-800 w-full h-[90vh] flex justify-center items-center overflow-hidden'>
+    <div className='bg-slate-900 w-full h-screen flex justify-center items-center overflow-hidden'>
       <div className='bg-white outline-none shadow-2xl h-1/2  md:h-3/4 md:w-1/4 p-2 rounded-md flex items-center flex-col justify-evenly'>
       { loading?<div className='text-red-600 font-semibold text-sm text-center'>Please wait ! it will take time</div>:""}
 
@@ -49,10 +49,10 @@ function Login() {
       <form onSubmit={onSubmit} className='flex flex-col items-center gap-7'>
         <input onChange={(e)=>setEmail(e.target.value)} value={email} type="text" className='border-b-2 p-2  border-b-slate-900 ' placeholder='Email' />
         <input onChange={(e)=>setPassword(e.target.value)} value={password} type="password" placeholder='Password' className='border-b-2 p-2 border-b-slate-900' />
-        <button className='w-full hover:opacity-40 bg-purple-500 p-1 text-white font'>{loading?"loading":"Login"}</button>
+        <button className='w-full hover:opacity-40 bg-gray-800 p-1 text-white font'>{loading?"loading":"Login"}</button>
       </form>
       <div>
-       <p>Don't have an account? <Link to={"/singup"} className='text-blue-600 font-bold'>Sing UP</Link> </p>
+       <p>Don't have an account? <Link to={"/signup"} className='text-blue-600 font-bold'>Sign UP</Link> </p>
       </div>
 
       </div>
