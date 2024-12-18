@@ -76,6 +76,7 @@ const FeedPage = () => {
 
         setComments((prev) => [...prev, response.data.post.comments]);
         setNewComment(""); // Clear the input
+        alert("Comment added!!")
         setSelectedPost(null);
         setComments([]);
       } catch (error) {
