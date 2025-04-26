@@ -1,86 +1,137 @@
-import React, { useState,useEffect } from "react"
-import { Link } from "react-router-dom"
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-function singup(){
-  const[loading,setLoading] = useState(false)
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Card } from "@/components/ui/card";
+import { useToast } from "@/hooks/use-toast";
+import { ModeToggle } from "./mode-toggle";
 
-  const [username,setUserName] = useState();
-  const [name,setName] = useState();
-  const [email,setEmail] = useState();
-  const [password,setPassword] = useState();
+export default function Signup() {
+  const [username, setUserName] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const onSubmit = async (e)=>{
-    setLoading(true);
+  const { toast } = useToast();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+
+    if (!username || !name || !email || !password) {
+      toast({
+        title: "Missing Fields",
+        description: "Please fill in all fields.",
+        variant: "destructive",
+      });
+      setLoading(false);
+      return;
+    }
+
     try {
-      if(!username){
-        alert("username is not found")
-        setLoading(false)
-        return
+      const response = await axios.post(
+        "https://your-post-backend.onrender.com/api/auth/register",
+        { username, name, email, password }
+      );
+
+      if (response.data.success) {
+        toast({
+          title: "Sign up successful",
+          description: "Redirecting to login page...",
+        });
+        navigate("/login", { replace: true });
+      } else {
+        toast({
+          title: "Registration Failed",
+          description: response.data.message,
+          variant: "destructive",
+        });
       }
-      if(!name){
-        alert("name is not found")
-        setLoading(false)
-        return;
-      }
-      if(!email){
-        alert("email is not found")
-        setLoading(false)
-        return;
-      }
-      if(!password){
-        alert("password is not found")
-        setLoading(false)
-        return ;
-      }
-      
-      
-      const response = await axios.post('https://your-post-backend.onrender.com/api/auth/register',{username,name,email,password});
-      if(response.data.success){
-        alert(response.data.message);
-        
-        navigate('/login',{replace:true})
-      }
-      else{
-        alert(response.data.message);
-      }
-      setLoading(false)
     } catch (error) {
-      console.log('error',error)
+      toast({
+        title: "Something went wrong",
+        description: "Please try again later.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
     }
+  };
 
-  }
-  useEffect(()=>{
-    const func = async()=>{
-      const res = await axios.get("https://your-post-backend.onrender.com");
-      console.log(res.data);
-      
-    }
-    func();
-  },[])
-  
-    return (
-        <div className='bg-slate-900 w-full h-screen flex justify-center items-center overflow-hidden'>
-      <div className='bg-white outline-none shadow-2xl h-1/2  md:h-3/4 md:w-1/4 p-2 rounded-md flex items-center flex-col justify-evenly'>
-      { loading?<div className='text-red-600 font-semibold text-sm text-center'>Please wait ! it will take time</div>:""}
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-background text-foreground px-4">
+      <Card className="w-full max-w-md bg-card border border-border rounded-xl p-8 shadow-lg space-y-6">
+        <div className="text-center">
+          <h2 className="text-2xl font-semibold">Create Account</h2>
+          <p className="text-muted-foreground text-sm mt-1">
+            Enter your details to sign up
+          </p>
+        </div>
 
-      <h3 className='text-lg font-bold text-slate-900'>Sign Up</h3>
-     
-      <form onSubmit={onSubmit} className='flex flex-col items-center gap-3'>
-        <input onChange={(e)=>setUserName(e.target.value)} value={username} type="text" className='border-b-2 p-2  border-b-slate-900 ' placeholder='Username' />
-        <input  onChange={(e)=>setName(e.target.value)} value={name} type="text" className='border-b-2 p-2  border-b-slate-900 ' placeholder='Name' />
-        <input onChange={(e)=>setEmail(e.target.value)} value={email} type="text" className='border-b-2 p-2  border-b-slate-900 ' placeholder='Email' />
-        <input onChange={(e)=>setPassword(e.target.value)} value={password} type="password" placeholder='Password' className='border-b-2 p-2 border-b-slate-900' />
-        <button className='w-full bg-gray-800 p-1 text-white font'>{loading?"loading":"Sign Up"}</button>
-      </form>
-      <div>
-       <p>Already have an account? <Link to={"/login"} className='text-blue-600 font-bold'>Login</Link> </p>
-      </div>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <Label htmlFor="username">Username</Label>
+            <Input
+              id="username"
+              type="text"
+              placeholder="Your unique username"
+              value={username}
+              onChange={(e) => setUserName(e.target.value)}
+            />
+          </div>
 
-      </div>
-      
+          <div>
+            <Label htmlFor="name">Full Name</Label>
+            <Input
+              id="name"
+              type="text"
+              placeholder="Your full name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </div>
+
+          <div>
+            <Label htmlFor="email">Email</Label>
+            <Input
+              id="email"
+              type="email"
+              placeholder="you@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+
+          <div>
+            <Label htmlFor="password">Password</Label>
+            <Input
+              id="password"
+              type="password"
+              placeholder="••••••••"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+
+          <Button type="submit" className="w-full" disabled={loading}>
+            {loading ? "Creating account..." : "Sign Up"}
+          </Button>
+        </form>
+
+        <p className="text-sm text-center text-muted-foreground">
+          Already have an account?{" "}
+          <Link to="/login" className="text-link hover:underline">
+            Log in
+          </Link>
+        </p>
+
+        <div className="text-center mt-4">
+          <ModeToggle />
+        </div>
+      </Card>
     </div>
-    )
+  );
 }
-export default singup

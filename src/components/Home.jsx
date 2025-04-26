@@ -1,218 +1,162 @@
-import React, { useEffect, useState, useRef } from 'react'
-import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState, useRef } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import axios from 'axios';
 import { AiFillDelete } from 'react-icons/ai';
+import { Button } from "@/components/ui/button"; // ShadCN Button
+import { Card, CardContent } from "@/components/ui/card"; // ShadCN Card
 
 function Home() {
-  const[deleteLoading,setDeleteLoading] = useState(true);
   const [profileImage, setProfileImage] = useState();
   const [editImage, seteditImage] = useState();
   const [posts, setPosts] = useState([]);
-  const reference = useRef(null)
+  const reference = useRef(null);
   const [userdetails, setUserdetails] = useState();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const token = localStorage.getItem('token');
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [loading, setLoading] = useState(true);
-
- 
-
-  const handleMenuToggle = () => setIsMenuOpen(!isMenuOpen);
+  const [deleteLoading, setDeleteLoading] = useState(false);
 
   const userDetails = async () => {
-
     const res = await axios.get("https://your-post-backend.onrender.com/api/userdetails", {
       headers: { Authorization: `Bearer ${token}` }
     });
     if (res.data.success) {
+      setPosts(res.data.user.posts);
+      setUserdetails(res.data.user);
+      seteditImage(res.data.user.profile_picture);
       setLoading(false);
-     setPosts(res.data.user.posts);
-      
-      setUserdetails(res.data.user)
-      seteditImage(res.data.user.profile_picture)
+    } else {
+      alert("User is not found || please login first");
     }
-
-
-    else {
-      alert("User is not found || please login first")
-    }
-
-
-  }
- 
+  };
 
   useEffect(() => {
-
-    if (!localStorage.getItem("token")) {
-      navigate('/login')
+    if (!token) {
+      navigate('/login');
     }
-    userDetails()
-   
+    userDetails();
+  }, []);
 
-  }, [setPosts])
-  const logout = () => {
-    localStorage.removeItem("token")
-    navigate('/login')
-  }
-  const updateProfilePicture = async (e) => {
-
+  const updateProfilePicture = () => {
     reference.current.click();
-
-  }
+  };
 
   useEffect(() => {
-    if (profileImage){
+    if (profileImage) {
       const func = async () => {
         const formdata = new FormData();
-        formdata.append('profileImage', profileImage)
+        formdata.append('profileImage', profileImage);
 
         const res = await axios.post('https://your-post-backend.onrender.com/api/editpicture', formdata, {
           headers: {
             'Content-Type': 'multipart/form-data',
             Authorization: `Bearer ${token}`,
           }
-        })
+        });
+
         if (res.data.success) {
-
-          seteditImage(res.data.user.profile_picture)
-
+          seteditImage(res.data.user.profile_picture);
+        } else {
+          alert("Something went wrong");
         }
-        else {
-          alert("Something went wrong")
-        }
-      }
+      };
       func();
     }
+  }, [profileImage]);
 
-
-
-
-  }, [profileImage])
-  const deletePost = async (id)=>{
+  const deletePost = async (id) => {
     try {
-      setDeleteLoading(false);
-      const res = await axios.post("https://your-post-backend.onrender.com/api/deletePost",{id},{
-        headers:{
-           Authorization: `Bearer ${token}`
-        }
-        
-      })
-     
       setDeleteLoading(true);
-      if(res.data.success){
+      const res = await axios.post("https://your-post-backend.onrender.com/api/deletePost", { id }, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      if (res.data.success) {
         setPosts(res.data.updateduser.posts);
-      }
-      else{
+      } else {
         alert("Something went wrong");
       }
     } catch (error) {
       console.log(error);
-      
+    } finally {
+      setDeleteLoading(false);
     }
-   
-
-  }
-  
-  
-
+  };
 
   return (
-    <div className=' w-full bg-gray-400 h-auto mb-12 '>
-      <div className='relative bg-zinc-900 w-full flex flex-col items-center justify-center  h-72' >
-        <div className='flex flex-col items-center  '><img src={`${editImage}`} alt='pic' className='object-contain rounded-full  bg-white w-24 h-24' />
-          <button onClick={updateProfilePicture} className='px-1 py-1 text-white bg-sky-400 font-bold  text-xs'>Edit Picture</button>
-          <input className='hidden' name='profileImage' onChange={(e) => setProfileImage(e.target.files[0])} ref={reference} type="file" />
+    <div className="min-h-screen w-full bg-gradient-to-b from-gray-900 to-gray-700 pb-12">
+      
+      {/* Profile Section */}
+      <div className="w-full flex flex-col items-center py-10">
+        <div className="relative group">
+          <img
+            src={editImage}
+            alt="Profile"
+            className="w-28 h-28 rounded-full border-4 border-sky-400 object-cover"
+          />
+          <input
+            type="file"
+            className="hidden"
+            ref={reference}
+            name="profileImage"
+            onChange={(e) => setProfileImage(e.target.files[0])}
+          />
+          <Button 
+            variant="outline"
+            size="sm"
+            className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 opacity-0 group-hover:opacity-100 transition"
+            onClick={updateProfilePicture}
+          >
+            Edit
+          </Button>
         </div>
-        <div className='text-white text-center text-2xl font-bold'>@{userdetails?.username}</div>
-        <div className='text-white text-center'>{userdetails?.email}</div>
-        <div className='flex justify-center gap-3'>
-          
-          <Link to={"/upload"} className='bg-sky-400 text-white rounded-sm px-2 py-1 font-bold m-1 outline-none'>Create Post </Link>
-          {/* <Link to={"/dashboard"} className='bg-sky-400 text-white rounded-sm px-2 py-1 font-bold m-1 outline-none'>Sentiment analysis Dashboard</Link> */}
 
-        </div>
-        <div>
-        <button   className="text-3xl absolute top-5 right-12 text-white  focus:outline-none hover:text-gray-400"
-          onClick={handleMenuToggle}>≡</button>
-           {isMenuOpen && (
-        <div className="absolute top-12 right-4  font-bold  text-white">
-          <ul className="flex flex-col items-center space-y-2 py-4">
-          <li
-              className="cursor-pointer text-white hover:text-gray-400"
-              onClick={() => {
-                navigate("/dashboard");
-                setIsMenuOpen(false); // Close menu after navigating
-              }}
-            >
-              Dashboard
-            </li>
-            <li
-              className="cursor-pointer text-white hover:text-gray-400"
-              onClick={() => {
-                navigate("/profileviewer");
-                setIsMenuOpen(false); // Close menu after navigating
-              }}
-            >
-              Profile Viewers
-            </li>
-            <li
-              className="cursor-pointer text-white  hover:text-gray-400"
-              onClick={() => {
-                logout();
-                setIsMenuOpen(false); // Close menu after navigating
-              }}
-            >
-              Logout
-            </li>
-          </ul>
+        <h1 className="text-2xl font-bold text-white mt-4">@{userdetails?.username}</h1>
+
+        <Button
+          variant="default"
+          className="mt-4"
+          onClick={() => navigate("/profileviewer")}
+        >
+          View Profile Viewers
+        </Button>
+      </div>
+
+      {/* Divider */}
+      <div className="h-[2px] w-[80%] mx-auto bg-sky-400 my-6"></div>
+
+      {/* Posts Section */}
+      {loading ? (
+        <p className="text-center text-white text-lg mt-6">Loading posts...</p>
+      ) : posts.length === 0 ? (
+        <p className="text-center text-gray-300 text-xl mt-10">No posts yet. Start sharing your moments!</p>
+      ) : (
+        <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 px-6">
+          {posts.map((post) => (
+            <Card key={post._id} className="bg-slate-800 hover:scale-105 transition-all overflow-hidden">
+              <img
+                src={post.postImage}
+                alt="Post"
+                className="w-full h-72 object-cover"
+              />
+              <CardContent className="p-4">
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-white font-semibold text-base truncate">
+                    {post.postCaption}
+                  </span>
+                  <button onClick={() => deletePost(post._id)} className="text-red-500 hover:text-red-400">
+                    {deleteLoading ? "..." : <AiFillDelete size={20} />}
+                  </button>
+                </div>
+                <p className="text-gray-400 text-xs">{new Date(post.CreatedAt).toLocaleString()}</p>
+              </CardContent>
+            </Card>
+          ))}
         </div>
       )}
-
-        </div>
-       
-
-      </div>
-      { deleteLoading?<div></div>:<div className='text-red-600 font-semibold text-sm text-center'>Please wait ! file is deleting </div>}
-
-
-{
-  loading ? 
-    <p className="text-center mt-6 text-lg">Loading posts...</p>
-  : <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mt-4 bg-gray-400 gap-6">
-    
- {posts && posts.map((post) =>(
-    <div key={post._id} className="overflow-hidden mx-2  rounded-xl shadow-lg bg-slate-900">
-      <div className="w-full h-64 flex items-center justify-center bg-slate-900">
-        <img
-          src={post.postImage}
-          alt="post"
-          className="w-full h-full object-contain rounded-lg"
-        />
-      </div>
-      <div className="p-4">
-        <div className='flex justify-between'>
-          <span className="text-sm text-white font-semibold mb-2">-: {post.postCaption}</span>
-          <span onClick={()=>deletePost(post._id)} className='cursor-pointer text-red-500 size-8'>{deleteLoading?<AiFillDelete />:"..."}</span>
-        </div>
-        <p className="text-xs text-gray-300">{new Date(post.CreatedAt).toLocaleString()}</p>
-      </div>
     </div>
-  ))}
-    </div>
-    
-    
- 
-
-}
-     
-
-
-
-
-
-    </div>
-  )
+  );
 }
 
-export default Home
+export default Home;
