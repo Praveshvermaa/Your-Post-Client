@@ -131,9 +131,9 @@ const Dashboard = () => {
 
       {/* Filter Section */}
       <div className="flex flex-wrap justify-center space-x-4 mb-8">
-        <Button variant="primary" onClick={() => setSentimentFilter("positive")}>Positive Posts</Button>
-        <Button variant="danger" onClick={() => setSentimentFilter("negative")}>Negative Posts</Button>
-        <Button variant="warning" onClick={() => setSentimentFilter("neutral")}>Neutral Posts</Button>
+        <Button variant="outline" onClick={() => setSentimentFilter("positive")}>Positive Posts</Button>
+        <Button variant="outline" onClick={() => setSentimentFilter("negative")}>Negative Posts</Button>
+        <Button variant="outline" onClick={() => setSentimentFilter("neutral")}>Neutral Posts</Button>
         <Button variant="outline" onClick={() => setSentimentFilter("all")}>All Posts</Button>
       </div>
 
