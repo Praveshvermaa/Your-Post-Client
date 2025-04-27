@@ -4,7 +4,8 @@ import axios from 'axios';
 import { AiFillDelete } from 'react-icons/ai';
 import { Button } from "@/components/ui/button"; // ShadCN Button
 import { Card, CardContent } from "@/components/ui/card"; // ShadCN Card
-
+import axiosInstance from '@/utils/axiosInstance';
+import blankProfilePicture from "../assets/blankProfile.webp"
 function Home() {
   const [profileImage, setProfileImage] = useState();
   const [editImage, seteditImage] = useState();
@@ -17,7 +18,7 @@ function Home() {
   const [deleteLoading, setDeleteLoading] = useState(false);
 
   const userDetails = async () => {
-    const res = await axios.get("https://your-post-backend.onrender.com/api/userdetails", {
+    const res = await axiosInstance.get("/api/userdetails", {
       headers: { Authorization: `Bearer ${token}` }
     });
     if (res.data.success) {
@@ -47,7 +48,7 @@ function Home() {
         const formdata = new FormData();
         formdata.append('profileImage', profileImage);
 
-        const res = await axios.post('https://your-post-backend.onrender.com/api/editpicture', formdata, {
+        const res = await axiosInstance.post('/api/editpicture', formdata, {
           headers: {
             'Content-Type': 'multipart/form-data',
             Authorization: `Bearer ${token}`,
@@ -67,7 +68,7 @@ function Home() {
   const deletePost = async (id) => {
     try {
       setDeleteLoading(true);
-      const res = await axios.post("https://your-post-backend.onrender.com/api/deletePost", { id }, {
+      const res = await axiosInstance.post("/api/deletePost", { id }, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -91,7 +92,7 @@ function Home() {
       <div className="w-full flex flex-col items-center py-10">
         <div className="relative group">
           <img
-            src={editImage}
+            src={editImage||blankProfilePicture}
             alt="Profile"
             className="w-28 h-28 rounded-full border-4 border-sky-400 object-cover"
           />

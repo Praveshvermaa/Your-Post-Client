@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useToast } from '@/hooks/use-toast';
+import axiosInstance from '@/utils/axiosInstance';
 
 const useUser = () => {
   const [user, setUser] = useState(null);
@@ -12,7 +13,7 @@ const useUser = () => {
   const userDetails = async () => {
     try {
       setLoading(true);
-      const res = await axios.get('https://your-post-backend.onrender.com/api/userdetails', {
+      const res = await axiosInstance.get('/api/userdetails', {
         headers: { Authorization: `Bearer ${token}` },
       });
 

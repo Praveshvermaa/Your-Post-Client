@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
  import { ModeToggle } from "./mode-toggle"; // Your custom mode toggle component
+ import axiosInstance from '../utils/axiosInstance'
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -28,8 +29,8 @@ export default function Login() {
     }
 
     try {
-      const response = await axios.post(
-        "https://your-post-backend.onrender.com/api/auth/login",
+      const response = await axiosInstance.post(
+        "/api/auth/login",
         { email, password }
       );
 

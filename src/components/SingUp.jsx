@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { ModeToggle } from "./mode-toggle";
+import axiosInstance from "@/utils/axiosInstance";
 
 export default function Signup() {
   const [username, setUserName] = useState("");
@@ -32,8 +33,8 @@ export default function Signup() {
     }
 
     try {
-      const response = await axios.post(
-        "https://your-post-backend.onrender.com/api/auth/register",
+      const response = await axiosInstance.post(
+        "/api/auth/register",
         { username, name, email, password }
       );
 

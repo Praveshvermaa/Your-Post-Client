@@ -7,6 +7,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { ModeToggle } from "./mode-toggle";
+import axiosInstance from "@/utils/axiosInstance";
 
 function Upload() {
   const [loading, setLoading] = useState(false);
@@ -25,7 +26,7 @@ function Upload() {
     formData.append("postCaption", caption);
 
     try {
-      await axios.post("https://your-post-backend.onrender.com/api/upload", formData, {
+      await axiosInstance.post("/api/upload", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,

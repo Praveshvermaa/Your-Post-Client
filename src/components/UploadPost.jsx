@@ -1,4 +1,5 @@
 import React from 'react'
+import axiosInstance from '@/utils/axiosInstance';
 
 function uploadPost() {
     const [file,setFile] = useState();
@@ -13,7 +14,7 @@ function uploadPost() {
         formData.append('email',localStorage.getItem("email"))
        // console.log(formData.get('postImage'))
       
-        const res = await axios.post("https://your-post-backend.onrender.com/api/upload",formData,{
+        const res = await axiosInstance.post("/api/upload",formData,{
           headers:{
             'Content-Type': 'multipart/form-data',
           },

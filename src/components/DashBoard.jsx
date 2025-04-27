@@ -8,6 +8,7 @@ import { Card } from "./ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from './ui/dialog';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, ChartTitle, Tooltip, Legend);
+import axiosInstance from "@/utils/axiosInstance";
 
 const Dashboard = () => {
   const [posts, setPosts] = useState([]);
@@ -21,7 +22,7 @@ const Dashboard = () => {
 
   const fetchPostsAnalysis = async () => {
     try {
-      const response = await axios.get(`https://your-post-backend.onrender.com/api/dashboard/usersposts`, {
+      const response = await axiosInstance.get(`/api/dashboard/usersposts`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setPosts(response.data.user.posts);

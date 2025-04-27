@@ -5,6 +5,8 @@ import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from '@/hook/use-toast';
+import axiosInstance from '@/utils/axiosInstance';
+
 
 function User() {
   const { userId } = useParams();
@@ -14,8 +16,8 @@ function User() {
 
   const viewerIdSender = async () => {
     try {
-      const res = await axios.post(
-        "https://your-post-backend.onrender.com/api/profileveiwer",
+      const res = await axiosInstance.post(
+        "/api/profileveiwer",
         { profileOwnerId: userId },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -33,8 +35,8 @@ function User() {
 
   const profileOwnerDetails = async () => {
     try {
-      const res = await axios.post(
-        'https://your-post-backend.onrender.com/api/profileownerdetails',
+      const res = await axiosInstance.post(
+        '/api/profileownerdetails',
         { profileOwnerId: userId }
       );
       if (res.data.success) {

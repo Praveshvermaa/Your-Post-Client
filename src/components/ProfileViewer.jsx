@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import axiosInstance from "@/utils/axiosInstance";
 
 const ProfileViewer = () => {
   const [visitors, setVisitors] = useState([]);
@@ -12,7 +13,7 @@ const ProfileViewer = () => {
 
   const fetchVisitors = async () => {
     try {
-      const response = await axios.get("https://your-post-backend.onrender.com/api/profileviewer", {
+      const response = await axiosInstance.get("/api/profileviewer", {
         headers: {
           Authorization: `Bearer ${token}`
         }

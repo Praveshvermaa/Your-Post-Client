@@ -7,6 +7,8 @@ import { useToast } from '@/hook/use-toast';
 import useUser from '@/hook/use-user';
 import { Sheet, SheetTrigger, SheetContent } from '@/components/ui/sheet';
 import { Menu } from 'lucide-react';
+import axiosInstance from '@/utils/axiosInstance'; 
+import blankProfilePicture from "../assets/blankProfile.webp"
 
 function Navbar() {
   const navigate = useNavigate();
@@ -49,7 +51,7 @@ function Navbar() {
           {/* Always Visible Profile Avatar */}
           <Link to="/">
             <Avatar className="h-12 w-12 cursor-pointer">
-              <AvatarImage src={user?.profile_picture || "/default-avatar.jpg"} alt="Profile" />
+              <AvatarImage src={user?.profile_picture || blankProfilePicture} alt="Profile" />
             </Avatar>
           </Link>
 

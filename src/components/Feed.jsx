@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useToast } from "@/hooks/use-toast";
+import axiosInstance from "@/utils/axiosInstance";
+
 
 const FeedPage = () => {
   const [posts, setPosts] = useState([]);
@@ -27,7 +29,7 @@ const FeedPage = () => {
 
   const fetchPosts = async () => {
     try {
-      const res = await axios.get("https://your-post-backend.onrender.com/api/allposts");
+      const res = await axiosInstance.get("/api/allposts");
       setPosts(res.data.posts);
       setLoading(false);
     } catch (error) {
@@ -38,7 +40,7 @@ const FeedPage = () => {
 
   const fetchComments = async (postId) => {
     try {
-      const res = await axios.get(`https://your-post-backend.onrender.com/api/post/comment/${postId}`);
+      const res = await axiosInstance.get(`/api/post/comment/${postId}`);
       setComments(res.data.post.comments || []);
     } catch (error) {
       console.error("Error fetching comments:", error);
@@ -55,8 +57,8 @@ const FeedPage = () => {
 
     try {
       setSending(true);
-      const res = await axios.post(
-        `https://your-post-backend.onrender.com/api/post/comment/${selectedPost._id}`,
+      const res = await axiosInstance.post(
+        `/api/post/comment/${selectedPost._id}`,
         { text: newComment },
         {
           headers: {
@@ -65,7 +67,7 @@ const FeedPage = () => {
         }
       );
 
-      await axios.post("https://your-post-backend.onrender.com/api/post/sentiment-analysis", {
+      await axiosInstance.post("/api/post/sentiment-analysis", {
         comment: newComment,
         postId: selectedPost._id,
       });
