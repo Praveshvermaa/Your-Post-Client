@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from "@/utils/axiosInstance";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { ModeToggle } from "./mode-toggle";
-import axiosInstance from "@/utils/axiosInstance";
+import { Sparkles } from "lucide-react";
 
 function Upload() {
   const [loading, setLoading] = useState(false);
@@ -48,6 +48,10 @@ function Upload() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleAIGenerateRedirect = () => {
+    navigate("/AIgenerator");
   };
 
   return (
@@ -91,6 +95,21 @@ function Upload() {
               {loading ? "Uploading..." : "Submit"}
             </Button>
           </form>
+
+          <div className="my-4 flex items-center justify-center gap-2">
+            <hr className="flex-grow border-gray-300" />
+            <span className="text-gray-500 text-sm">OR</span>
+            <hr className="flex-grow border-gray-300" />
+          </div>
+
+          <Button
+            type="button"
+            onClick={handleAIGenerateRedirect}
+            className="w-full bg-purple-500 hover:bg-purple-600"
+          >
+            <Sparkles className="w-5 h-5 mr-2" />
+            Generate Image with AI
+          </Button>
 
           <div className="mt-6 flex justify-center">
             <ModeToggle />
