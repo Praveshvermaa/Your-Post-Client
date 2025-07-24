@@ -131,7 +131,7 @@ const FeedPage = () => {
         </div>
       )}
 
-      {/* Comment Modal */}
+     
       <Dialog open={!!selectedPost} onOpenChange={() => setSelectedPost(null)}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>

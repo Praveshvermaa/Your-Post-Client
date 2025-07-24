@@ -31,12 +31,11 @@ function Navbar() {
   return (
     <div className="bg-background p-4 shadow-lg">
       <div className="flex items-center justify-between max-w-screen-xl mx-auto">
-        {/* Left: Logo */}
+        
         <Link to="/feed" className="text-2xl font-semibold text-foreground hover:text-primary transition duration-300">
           <span className="font-bold text-blue-600">Vibe</span>Verse.
         </Link>
 
-        {/* Right: Upload, Avatar, and Menu */}
         <div className="flex items-center space-x-4">
           {/* Always Visible Upload */}
           <Link to="/upload">
@@ -48,14 +47,12 @@ function Navbar() {
             </Button>
           </Link>
 
-          {/* Always Visible Profile Avatar */}
           <Link to="/">
             <Avatar className="h-12 w-12 cursor-pointer">
               <AvatarImage src={user?.profile_picture || blankProfilePicture} alt="Profile" />
             </Avatar>
           </Link>
 
-          {/* Hamburger Menu */}
           <Sheet>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon">

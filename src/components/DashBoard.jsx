@@ -130,7 +130,7 @@ const Dashboard = () => {
     <div className="p-4 lg:p-8 bg-gray-100 min-h-screen dark:bg-gray-900 dark:text-white">
       <h2 className="text-2xl font-semibold mb-8 text-center text-gray-800 dark:text-white">Your Post Analysis</h2>
 
-      {/* Filter Section */}
+    
       <div className="flex flex-wrap justify-center space-x-4 mb-8">
         <Button variant="outline" onClick={() => setSentimentFilter("positive")}>Positive Posts</Button>
         <Button variant="outline" onClick={() => setSentimentFilter("negative")}>Negative Posts</Button>
@@ -138,12 +138,12 @@ const Dashboard = () => {
         <Button variant="outline" onClick={() => setSentimentFilter("all")}>All Posts</Button>
       </div>
 
-      {/* Sentiment Trend Chart */}
+     
       <div className="w-full lg:w-2/3 mx-auto mb-10 h-72">
         <Line data={sentimentTrendData} options={chartOptions} />
       </div>
 
-      {/* Posts List */}
+     
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {filteredPosts.map((post) => (
           <Card key={post._id} className="bg-white shadow-lg rounded-lg p-6 flex flex-col dark:bg-gray-800 dark:text-white">
@@ -166,7 +166,7 @@ const Dashboard = () => {
         ))}
       </div>
 
-      {/* Modal for Post Details */}
+     
       <Dialog open={modalOpen} onClose={() => setModalOpen(false)}>
         <DialogContent>
           <DialogHeader>

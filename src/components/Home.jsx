@@ -2,8 +2,8 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { AiFillDelete } from 'react-icons/ai';
-import { Button } from "@/components/ui/button"; // ShadCN Button
-import { Card, CardContent } from "@/components/ui/card"; // ShadCN Card
+import { Button } from "@/components/ui/button"; 
+import { Card, CardContent } from "@/components/ui/card";
 import axiosInstance from '@/utils/axiosInstance';
 import blankProfilePicture from "../assets/blankProfile.webp"
 function Home() {

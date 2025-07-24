@@ -27,11 +27,12 @@ function AIGenerate() {
     try {
       const genUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=512&height=512&nologo=true`;
       setImageUrl(genUrl);
-
-      toast({
-        title: "Image Generated",
-        description: "AI image has been created successfully.",
-      });
+      if (image) {
+        toast({
+          title: "Image Generated",
+          description: "AI image has been created successfully.",
+        });
+      }
     } catch (error) {
       console.error("Error generating image:", error);
       toast({
@@ -48,17 +49,17 @@ function AIGenerate() {
     if (!imageUrl || !prompt.trim()) return;
     setSubmitting(true);
     try {
-      // 1️⃣ Download image as blob from Pollinations
+      
       const response = await fetch(imageUrl);
       if (!response.ok) throw new Error("Failed to download image");
       const blob = await response.blob();
 
-      // 2️⃣ Create FormData to match your Multer upload route
+     
       const formData = new FormData();
       formData.append("postImage", blob, "ai-generated.png");
       formData.append("postCaption", prompt);
 
-      // 3️⃣ Upload to your server
+     
       await axiosInstance.post(
         "/api/upload",
         formData,

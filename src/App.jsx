@@ -1,7 +1,7 @@
-// src/App.jsx
 
-import { useToast } from "@/hooks/use-toast"; // Adjust the import path if needed
- // Adjust the import path if needed
+
+import { useToast } from "@/hooks/use-toast"; 
+ 
 
 import { ModeToggle } from "./components/mode-toggle";
 import Navbar from "./components/Navbar";

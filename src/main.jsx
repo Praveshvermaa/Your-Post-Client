@@ -13,7 +13,7 @@ import ProfileViewer from './components/ProfileViewer.jsx';
 import PostAnalyticsDashboard from './components/DashBoard';
 import App from './App';
 import { Toaster } from './components/ui/toaster';
-import { ThemeProvider } from './components/theme-provider';  // Import your ThemeProvider
+import { ThemeProvider } from './components/theme-provider'; 
 
 const router = createBrowserRouter(
   createRoutesFromElements(

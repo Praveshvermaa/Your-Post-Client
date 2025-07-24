@@ -5,8 +5,8 @@ import axiosInstance from '@/utils/axiosInstance';
 
 const useUser = () => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true); // Add loading state
-  const [error, setError] = useState(null); // Add error state
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null); 
   const toast = useToast();
   const token = localStorage.getItem('token');
 
@@ -38,7 +38,7 @@ const useUser = () => {
     }
   };
 
-  useEffect(() => {
+  useEffect(() =>{
     if (token) {
       userDetails();
     }

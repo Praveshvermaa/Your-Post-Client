@@ -4,7 +4,7 @@ import axios from "axios";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
- import { ModeToggle } from "./mode-toggle"; // Your custom mode toggle component
+ import { ModeToggle } from "./mode-toggle";
  import axiosInstance from '../utils/axiosInstance'
 
 export default function Login() {
@@ -95,7 +95,7 @@ export default function Login() {
         </p>
 
         <div className="text-center mt-4">
-          {/* Custom Mode Toggle Button */}
+          
           <ModeToggle />
         </div>
       </div>
