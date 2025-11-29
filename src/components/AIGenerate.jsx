@@ -26,13 +26,20 @@ function AIGenerate() {
     setLoading(true);
     try {
       const genUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=512&height=512&nologo=true`;
+      
+
       setImageUrl(genUrl);
-      if (image) {
+      if (imageUrl) {
         toast({
           title: "Image Generated",
           description: "AI image has been created successfully.",
         });
       }
+      toast({
+        title: "Image loading",
+        description: "processing.",
+      });
+
     } catch (error) {
       console.error("Error generating image:", error);
       toast({
