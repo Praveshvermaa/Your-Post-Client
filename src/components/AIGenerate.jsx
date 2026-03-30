@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios"; // use plain axios for FormData upload
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -13,6 +12,7 @@ import axiosInstance from "@/utils/axiosInstance";
 function AIGenerate() {
   const [prompt, setPrompt] = useState("");
   const [imageUrl, setImageUrl] = useState("");
+  const [imageBlob, setImageBlob] = useState(null); // store blob for upload
   const [loading, setLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
@@ -20,31 +20,50 @@ function AIGenerate() {
   const { toast } = useToast();
   const token = localStorage.getItem("token");
 
+  useEffect(() => {
+    if (!document.querySelector('script[src="https://js.puter.com/v2/"]')) {
+      const script = document.createElement("script");
+      script.src = "https://js.puter.com/v2/";
+      script.async = true;
+      document.head.appendChild(script);
+    }
+  }, []);
+
   const handleGenerateImage = async (e) => {
     e.preventDefault();
     if (!prompt.trim()) return;
     setLoading(true);
     try {
-      const genUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=512&height=512&nologo=true`;
-      
-
-      setImageUrl(genUrl);
-      if (imageUrl) {
-        toast({
-          title: "Image Generated",
-          description: "AI image has been created successfully.",
-        });
+      if (!window.puter) {
+        throw new Error("Puter.js is not loaded yet. Please wait a moment and try again.");
       }
-      toast({
-        title: "Image loading",
-        description: "processing.",
+
+      // Generate the image using Puter.js with a free open-source model
+      const imageElement = await window.puter.ai.txt2img(prompt, {
+        model: "RunDiffusion/Juggernaut-pro-flux",
       });
 
+      if (!imageElement || !imageElement.src) {
+        throw new Error("No image was returned from AI.");
+      }
+
+      const imgSrc = imageElement.src;
+      setImageUrl(imgSrc);
+
+      // Convert the image src to a Blob for uploading backend
+      const res = await fetch(imgSrc);
+      const blob = await res.blob();
+      setImageBlob(blob);
+
+      toast({
+        title: "Image Generated",
+        description: "AI image has been created successfully.",
+      });
     } catch (error) {
       console.error("Error generating image:", error);
       toast({
         title: "Generation Failed",
-        description: "Something went wrong while generating the image.",
+        description: error.message || "Something went wrong while generating the image.",
         variant: "destructive",
       });
     } finally {
@@ -56,17 +75,16 @@ function AIGenerate() {
     if (!imageUrl || !prompt.trim()) return;
     setSubmitting(true);
     try {
-      
-      const response = await fetch(imageUrl);
-      if (!response.ok) throw new Error("Failed to download image");
-      const blob = await response.blob();
 
-     
+      // Use the blob already captured during generation
+      const blob = imageBlob;
+
+
       const formData = new FormData();
       formData.append("postImage", blob, "ai-generated.png");
       formData.append("postCaption", prompt);
 
-     
+
       await axiosInstance.post(
         "/api/upload",
         formData,
