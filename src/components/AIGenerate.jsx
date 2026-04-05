@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { ModeToggle } from "./mode-toggle";
-import { Loader2, ImagePlus, Send } from "lucide-react";
+import { Loader2, ImagePlus, Send, Sparkles, Wand2 } from "lucide-react";
 import axiosInstance from "@/utils/axiosInstance";
 
 function AIGenerate() {
@@ -115,78 +115,105 @@ function AIGenerate() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background px-4 text-foreground">
-      <Card className="w-full max-w-md p-6 shadow-xl space-y-4">
-        <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-semibold flex items-center justify-center gap-2">
-            <ImagePlus className="w-6 h-6 text-blue-500" /> AI Image Generator
+    <div className="min-h-screen flex items-center justify-center gradient-bg px-4 relative overflow-hidden">
+      {/* Background orbs */}
+      <div className="orb orb-1 top-[-120px] left-[-80px]"></div>
+      <div className="orb orb-2 bottom-[-100px] right-[-60px]"></div>
+      <div className="orb orb-3 top-[50%] right-[5%]"></div>
+
+      <Card className="w-full max-w-md glass-card rounded-2xl border-0 glow-violet animate-fadeInUp relative z-10">
+        <CardHeader className="text-center pb-2">
+          <div className="mx-auto mb-2 p-3 rounded-2xl bg-violet-500/10 w-fit">
+            <Wand2 className="h-7 w-7 text-violet-400" />
+          </div>
+          <CardTitle className="text-2xl font-bold">
+            <span className="gradient-text">AI Image</span> Generator
           </CardTitle>
+          <p className="text-muted-foreground text-sm mt-1">Describe your vision and let AI create it</p>
         </CardHeader>
 
         {loading && (
-          <p className="text-center text-sm text-blue-500 font-medium">
-            Generating image, please wait...
-          </p>
+          <div className="flex items-center justify-center gap-2 py-2">
+            <div className="h-4 w-4 border-2 border-violet-400/30 border-t-violet-400 rounded-full animate-spin"></div>
+            <p className="text-sm text-violet-400 font-medium">Generating image...</p>
+          </div>
         )}
 
         {submitting && (
-          <p className="text-center text-sm text-green-500 font-medium">
-            Submitting your post, please wait...
-          </p>
+          <div className="flex items-center justify-center gap-2 py-2">
+            <div className="h-4 w-4 border-2 border-emerald-400/30 border-t-emerald-400 rounded-full animate-spin"></div>
+            <p className="text-sm text-emerald-400 font-medium">Submitting post...</p>
+          </div>
         )}
 
-        <CardContent>
+        <CardContent className="space-y-5 pt-4">
           <form onSubmit={handleGenerateImage} className="space-y-4">
             <div>
-              <Label htmlFor="prompt">Prompt</Label>
-              <Input
-                id="prompt"
-                type="text"
-                value={prompt}
-                onChange={(e) => setPrompt(e.target.value)}
-                placeholder="e.g., A futuristic cityscape at sunset"
-                required
-                disabled={loading || submitting}
-              />
+              <Label htmlFor="prompt" className="text-sm font-medium text-muted-foreground mb-1.5 block">Prompt</Label>
+              <div className="relative">
+                <Sparkles className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-violet-400/60" />
+                <Input
+                  id="prompt"
+                  type="text"
+                  value={prompt}
+                  onChange={(e) => setPrompt(e.target.value)}
+                  placeholder="e.g., A futuristic cityscape at sunset"
+                  className="pl-10 bg-white/5 border-white/10 focus:border-violet-500/50 focus:ring-violet-500/20 transition-all duration-300"
+                  required
+                  disabled={loading || submitting}
+                />
+              </div>
             </div>
 
             <Button
               type="submit"
-              className="w-full bg-blue-500 hover:bg-blue-600"
+              className="w-full btn-gradient-primary text-white font-semibold h-11 gap-2"
               disabled={loading || submitting}
             >
               {loading ? (
-                <Loader2 className="animate-spin w-5 h-5 mr-2" />
+                <>
+                  <div className="h-5 w-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                  Generating...
+                </>
               ) : (
-                <ImagePlus className="w-5 h-5 mr-2" />
+                <>
+                  <ImagePlus className="w-5 h-5" />
+                  Generate Image
+                </>
               )}
-              {loading ? "Generating..." : "Generate Image"}
             </Button>
           </form>
 
           {imageUrl && (
-            <div className="space-y-4 mt-4">
-              <img
-                src={imageUrl}
-                alt="Generated"
-                className="rounded shadow-md w-full max-h-[400px] object-contain transition duration-300 ease-in-out hover:scale-105"
-              />
+            <div className="space-y-4 animate-fadeInUp">
+              <div className="rounded-xl overflow-hidden glass-card glow-violet-hover transition-all duration-300">
+                <img
+                  src={imageUrl}
+                  alt="Generated"
+                  className="w-full max-h-[400px] object-contain"
+                />
+              </div>
               <Button
                 onClick={handleSubmitPost}
-                className="w-full bg-green-500 hover:bg-green-600"
+                className="w-full btn-gradient-green text-white font-semibold h-11 gap-2"
                 disabled={submitting}
               >
                 {submitting ? (
-                  <Loader2 className="animate-spin w-5 h-5 mr-2" />
+                  <>
+                    <div className="h-5 w-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                    Submitting...
+                  </>
                 ) : (
-                  <Send className="w-5 h-5 mr-2" />
+                  <>
+                    <Send className="w-5 h-5" />
+                    Submit Post
+                  </>
                 )}
-                {submitting ? "Submitting..." : "Submit Post"}
               </Button>
             </div>
           )}
 
-          <div className="mt-6 flex justify-center">
+          <div className="flex justify-center pt-2">
             <ModeToggle />
           </div>
         </CardContent>

@@ -6,6 +6,7 @@ import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from './ui/dialog';
+import { BarChart3, TrendingUp, TrendingDown, Minus, Eye } from 'lucide-react';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, ChartTitle, Tooltip, Legend);
 import axiosInstance from "@/utils/axiosInstance";
@@ -56,11 +57,16 @@ const Dashboard = () => {
       {
         label: 'Sentiment Score Trend',
         data: posts.map(post => post.sentimentScore),
-        borderColor: 'rgb(75, 192, 192)',
-        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        borderColor: 'rgb(124, 58, 237)',
+        backgroundColor: 'rgba(124, 58, 237, 0.1)',
         fill: true,
         tension: 0.4,
         pointRadius: 5,
+        pointBackgroundColor: 'rgb(124, 58, 237)',
+        pointBorderColor: 'rgba(124, 58, 237, 0.3)',
+        pointBorderWidth: 4,
+        pointHoverRadius: 8,
+        pointHoverBorderWidth: 3,
       },
     ],
   };
@@ -70,15 +76,20 @@ const Dashboard = () => {
     maintainAspectRatio: false,
     plugins: {
       title: {
-        display: true,
-        text: 'Sentiment Score Trend',
-        font: {
-          size: 18,
-          weight: 'bold',
+        display: false,
+      },
+      legend: {
+        labels: {
+          color: 'rgba(255,255,255,0.7)',
+          font: { family: 'Inter', size: 12 },
         },
-        color: '#333',
       },
       tooltip: {
+        backgroundColor: 'rgba(15, 10, 30, 0.9)',
+        borderColor: 'rgba(124, 58, 237, 0.3)',
+        borderWidth: 1,
+        titleFont: { family: 'Inter', size: 13 },
+        bodyFont: { family: 'Inter', size: 12 },
         callbacks: {
           label: (tooltipItem) => {
             return `Sentiment: ${tooltipItem.raw.toFixed(2)}`;
@@ -91,100 +102,179 @@ const Dashboard = () => {
         title: {
           display: true,
           text: 'Post Caption',
-          font: {
-            size: 14,
-            weight: 'bold',
-          },
-          color: '#555',
+          font: { family: 'Inter', size: 12, weight: '500' },
+          color: 'rgba(255,255,255,0.5)',
         },
         ticks: {
           maxRotation: 45,
           minRotation: 45,
           autoSkip: true,
+          color: 'rgba(255,255,255,0.4)',
+          font: { family: 'Inter', size: 11 },
         },
+        grid: { color: 'rgba(255,255,255,0.04)' },
       },
       y: {
         title: {
           display: true,
           text: 'Sentiment Score',
-          font: {
-            size: 14,
-            weight: 'bold',
-          },
-          color: '#555',
+          font: { family: 'Inter', size: 12, weight: '500' },
+          color: 'rgba(255,255,255,0.5)',
         },
         beginAtZero: true,
+        ticks: {
+          color: 'rgba(255,255,255,0.4)',
+          font: { family: 'Inter', size: 11 },
+        },
+        grid: { color: 'rgba(255,255,255,0.04)' },
       },
     },
   };
 
   if (loading) {
-    return <p className="text-center text-white">Loading...</p>;
+    return (
+      <div className="min-h-screen gradient-bg flex items-center justify-center">
+        <div className="flex items-center gap-3">
+          <div className="h-6 w-6 border-2 border-violet-400/30 border-t-violet-400 rounded-full animate-spin"></div>
+          <span className="text-muted-foreground font-medium">Loading analytics...</span>
+        </div>
+      </div>
+    );
   }
 
   if (!filteredPosts.length) {
-    return <p className="text-center text-white">No posts available for analysis.</p>;
+    return (
+      <div className="min-h-screen gradient-bg flex flex-col items-center justify-center gap-4">
+        <BarChart3 className="h-12 w-12 text-muted-foreground/30" />
+        <p className="text-muted-foreground text-lg">No posts available for analysis.</p>
+      </div>
+    );
   }
 
+  const filterButtons = [
+    { key: "positive", label: "Positive", icon: TrendingUp, color: "text-emerald-400" },
+    { key: "negative", label: "Negative", icon: TrendingDown, color: "text-red-400" },
+    { key: "neutral", label: "Neutral", icon: Minus, color: "text-amber-400" },
+    { key: "all", label: "All", icon: BarChart3, color: "text-violet-400" },
+  ];
+
   return (
-    <div className="p-4 lg:p-8 bg-gray-100 min-h-screen dark:bg-gray-900 dark:text-white">
-      <h2 className="text-2xl font-semibold mb-8 text-center text-gray-800 dark:text-white">Your Post Analysis</h2>
-
-    
-      <div className="flex flex-wrap justify-center space-x-4 mb-8">
-        <Button variant="outline" onClick={() => setSentimentFilter("positive")}>Positive Posts</Button>
-        <Button variant="outline" onClick={() => setSentimentFilter("negative")}>Negative Posts</Button>
-        <Button variant="outline" onClick={() => setSentimentFilter("neutral")}>Neutral Posts</Button>
-        <Button variant="outline" onClick={() => setSentimentFilter("all")}>All Posts</Button>
+    <div className="min-h-screen gradient-bg p-4 lg:p-8">
+      {/* Header */}
+      <div className="text-center mb-8 animate-fadeInUp">
+        <div className="inline-flex items-center gap-3 mb-2">
+          <BarChart3 className="h-7 w-7 text-violet-400" />
+          <h2 className="text-2xl sm:text-3xl font-extrabold">
+            <span className="gradient-text">Post</span>{" "}
+            <span className="text-foreground">Analytics</span>
+          </h2>
+        </div>
+        <p className="text-muted-foreground text-sm">Sentiment analysis of your content</p>
       </div>
 
-     
-      <div className="w-full lg:w-2/3 mx-auto mb-10 h-72">
-        <Line data={sentimentTrendData} options={chartOptions} />
-      </div>
-
-     
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {filteredPosts.map((post) => (
-          <Card key={post._id} className="bg-white shadow-lg rounded-lg p-6 flex flex-col dark:bg-gray-800 dark:text-white">
-            <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-4">{post.postCaption}</h3>
-            <div className="flex items-center space-x-2 mb-4">
-              <span className="text-gray-600 dark:text-gray-300">Sentiment Score:</span>
-              <span className={`font-bold ${post.sentimentScore > 0 ? "text-green-500" : post.sentimentScore < 0 ? "text-red-500" : "text-yellow-500"}`}>
-                {post.sentimentScore.toFixed(2)}
-              </span>
-            </div>
-            <div className="flex justify-end">
-              <Button variant="outline" onClick={() => {
-                setSelectedPost(post);
-                setModalOpen(true);
-              }}>
-                View Details
-              </Button>
-            </div>
-          </Card>
+      {/* Filter Buttons */}
+      <div className="flex flex-wrap justify-center gap-3 mb-8 animate-fadeInUp" style={{ animationDelay: '0.1s' }}>
+        {filterButtons.map(({ key, label, icon: Icon, color }) => (
+          <Button
+            key={key}
+            variant="ghost"
+            onClick={() => setSentimentFilter(key)}
+            className={`gap-2 rounded-xl border transition-all duration-300 ${
+              sentimentFilter === key
+                ? 'border-violet-500/40 bg-violet-500/10 text-violet-300 shadow-lg shadow-violet-500/10'
+                : 'border-white/[0.06] hover:bg-white/[0.04] text-muted-foreground'
+            }`}
+          >
+            <Icon className={`h-4 w-4 ${sentimentFilter === key ? color : ''}`} />
+            {label}
+          </Button>
         ))}
       </div>
 
-     
+      {/* Chart */}
+      <div className="w-full lg:w-2/3 mx-auto mb-10 h-72 glass-card rounded-2xl p-4 animate-fadeInUp" style={{ animationDelay: '0.2s' }}>
+        <Line data={sentimentTrendData} options={chartOptions} />
+      </div>
+
+      {/* Post Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-7xl mx-auto">
+        {filteredPosts.map((post, index) => {
+          const isPositive = post.sentimentScore > 0;
+          const isNegative = post.sentimentScore < 0;
+          const sentimentColor = isPositive ? 'text-emerald-400' : isNegative ? 'text-red-400' : 'text-amber-400';
+          const borderGlow = isPositive 
+            ? 'hover:border-emerald-500/30 hover:shadow-emerald-500/10' 
+            : isNegative 
+              ? 'hover:border-red-500/30 hover:shadow-red-500/10' 
+              : 'hover:border-amber-500/30 hover:shadow-amber-500/10';
+
+          return (
+            <Card 
+              key={post._id} 
+              className={`glass-card rounded-2xl p-6 flex flex-col border-0 transition-all duration-400 hover:translate-y-[-4px] hover:shadow-lg ${borderGlow} animate-fadeInUp`}
+              style={{ animationDelay: `${0.3 + index * 0.06}s` }}
+            >
+              <h3 className="text-lg font-bold text-foreground mb-4 line-clamp-2">{post.postCaption}</h3>
+              <div className="flex items-center gap-2 mb-4">
+                <span className="text-muted-foreground text-sm">Sentiment:</span>
+                <span className={`font-bold text-lg ${sentimentColor}`}>
+                  {post.sentimentScore.toFixed(2)}
+                </span>
+              </div>
+              <div className="flex justify-end mt-auto">
+                <Button 
+                  variant="ghost"
+                  size="sm"
+                  className="gap-2 rounded-xl border border-white/[0.06] hover:bg-violet-500/10 text-muted-foreground hover:text-violet-400 transition-all duration-200"
+                  onClick={() => {
+                    setSelectedPost(post);
+                    setModalOpen(true);
+                  }}
+                >
+                  <Eye className="h-4 w-4" />
+                  Details
+                </Button>
+              </div>
+            </Card>
+          );
+        })}
+      </div>
+
+      {/* Detail Dialog */}
       <Dialog open={modalOpen} onClose={() => setModalOpen(false)}>
-        <DialogContent>
+        <DialogContent className="glass-card border-white/[0.08] rounded-2xl">
           <DialogHeader>
-            <DialogTitle className="text-xl font-semibold">Post Analysis</DialogTitle>
+            <DialogTitle className="text-xl font-bold">
+              <span className="gradient-text">Post</span> Analysis
+            </DialogTitle>
           </DialogHeader>
-          <div className="mt-4">
+          <div className="mt-4 space-y-4">
             {selectedPost && (
               <>
-                <h3 className="text-lg font-semibold">{selectedPost.postCaption}</h3>
-                <p className={`font-bold ${selectedPost.sentimentScore > 0 ? "text-green-500" : selectedPost.sentimentScore < 0 ? "text-red-500" : "text-yellow-500"}`}>
-                  Sentiment Score: {selectedPost.sentimentScore.toFixed(2)}
-                </p>
-                <p className="mt-4">{selectedPost.postDescription}</p>
+                <h3 className="text-lg font-semibold text-foreground">{selectedPost.postCaption}</h3>
+                <div className="flex items-center gap-2">
+                  <span className="text-muted-foreground text-sm">Score:</span>
+                  <span className={`font-bold text-xl ${
+                    selectedPost.sentimentScore > 0 ? "text-emerald-400" : 
+                    selectedPost.sentimentScore < 0 ? "text-red-400" : "text-amber-400"
+                  }`}>
+                    {selectedPost.sentimentScore.toFixed(2)}
+                  </span>
+                </div>
+                {selectedPost.postDescription && (
+                  <p className="text-foreground/80 text-sm leading-relaxed">{selectedPost.postDescription}</p>
+                )}
               </>
             )}
           </div>
           <DialogFooter>
-            <Button variant="secondary" onClick={() => setModalOpen(false)}>Close</Button>
+            <Button 
+              variant="ghost"
+              onClick={() => setModalOpen(false)}
+              className="rounded-xl border border-white/[0.06] hover:bg-violet-500/10"
+            >
+              Close
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

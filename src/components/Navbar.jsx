@@ -6,7 +6,7 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { useToast } from '@/hook/use-toast';
 import useUser from '@/hook/use-user';
 import { Sheet, SheetTrigger, SheetContent } from '@/components/ui/sheet';
-import { Menu } from 'lucide-react';
+import { Menu, Upload, LayoutDashboard, LogOut } from 'lucide-react';
 import axiosInstance from '@/utils/axiosInstance'; 
 import blankProfilePicture from "../assets/blankProfile.webp"
 
@@ -25,54 +25,83 @@ function Navbar() {
     });
   };
 
-  if (loading) return <div className="text-center p-4">Loading...</div>;
-  if (error) return <div className="p-4 text-red-500">Error fetching user details</div>;
+  if (loading) return (
+    <div className="h-16 glass sticky top-0 z-50 flex items-center justify-center">
+      <div className="h-5 w-32 shimmer rounded"></div>
+    </div>
+  );
+  if (error) return <div className="p-4 text-red-400 text-center text-sm">Error fetching user details</div>;
 
   return (
-    <div className="bg-background p-4 shadow-lg">
-      <div className="flex items-center justify-between max-w-screen-xl mx-auto">
+    <nav className="sticky top-0 z-50 glass border-b border-white/[0.06]">
+      <div className="flex items-center justify-between max-w-screen-xl mx-auto px-4 py-3">
         
-        <Link to="/feed" className="text-2xl font-semibold text-foreground hover:text-primary transition duration-300">
-          <span className="font-bold text-blue-600">Vibe</span>Verse.
+        {/* Brand */}
+        <Link to="/feed" className="group flex items-center gap-1">
+          <span className="text-2xl font-extrabold gradient-text-brand transition-all duration-300 group-hover:drop-shadow-[0_0_12px_rgba(124,58,237,0.5)]">
+            Vibe
+          </span>
+          <span className="text-2xl font-bold text-foreground">Verse</span>
+          <span className="text-2xl font-bold text-violet-400">.</span>
         </Link>
 
-        <div className="flex items-center space-x-4">
-          {/* Always Visible Upload */}
+        <div className="flex items-center gap-3">
+          {/* Upload Button */}
           <Link to="/upload">
             <Button
-              variant="outline"
-              className="hover:bg-blue-600 text-blue-600 border-blue-600 hover:text-white"
+              className="btn-gradient-primary text-white border-0 gap-2 font-medium px-5"
             >
-              Upload
+              <Upload className="h-4 w-4" />
+              <span className="hidden sm:inline">Upload</span>
             </Button>
           </Link>
 
-          <Link to="/">
-            <Avatar className="h-12 w-12 cursor-pointer">
-              <AvatarImage src={user?.profile_picture || blankProfilePicture} alt="Profile" />
+          {/* Profile Avatar */}
+          <Link to="/" className="avatar-ring">
+            <Avatar className="h-10 w-10 cursor-pointer ring-0">
+              <AvatarImage src={user?.profile_picture || blankProfilePicture} alt="Profile" className="object-cover" />
+              <AvatarFallback className="bg-violet-600/20 text-violet-300 font-semibold">
+                {user?.username?.slice(0, 2)?.toUpperCase() || 'VV'}
+              </AvatarFallback>
             </Avatar>
           </Link>
 
+          {/* Menu Sheet */}
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon">
-                <Menu className="h-6 w-6" />
+              <Button variant="ghost" size="icon" className="hover:bg-violet-500/10 transition-colors">
+                <Menu className="h-5 w-5" />
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="pt-10 space-y-6">
-              <Link to="/dashboard" className="block text-lg text-foreground hover:text-blue-600">
-                Dashboard
+            <SheetContent side="left" className="pt-12 space-y-2 glass border-r border-white/[0.06] w-72">
+              <div className="mb-6">
+                <h3 className="text-lg font-bold gradient-text-brand">Menu</h3>
+              </div>
+              <Link 
+                to="/dashboard" 
+                className="flex items-center gap-3 px-4 py-3 rounded-xl text-foreground hover:bg-violet-500/10 transition-all duration-200 group"
+              >
+                <LayoutDashboard className="h-5 w-5 text-violet-400 group-hover:text-violet-300 transition-colors" />
+                <span className="font-medium">Dashboard</span>
               </Link>
-              <ModeToggle />
-              <Button variant="destructive" onClick={handleLogout} className="w-full">
+              <div className="px-4 py-3">
+                <ModeToggle />
+              </div>
+              <div className="divider-gradient my-4"></div>
+              <Button 
+                variant="ghost" 
+                onClick={handleLogout} 
+                className="w-full justify-start gap-3 px-4 py-3 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-xl transition-all duration-200"
+              >
+                <LogOut className="h-5 w-5" />
                 Logout
               </Button>
             </SheetContent>
           </Sheet>
         </div>
       </div>
-    </div>
+    </nav>
   );
 }
 
-export default Navbar; 
+export default Navbar;

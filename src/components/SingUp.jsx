@@ -8,6 +8,7 @@ import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { ModeToggle } from "./mode-toggle";
 import axiosInstance from "@/utils/axiosInstance";
+import { User, Mail, Lock, AtSign, ArrowRight } from "lucide-react";
 
 export default function Signup() {
   const [username, setUserName] = useState("");
@@ -63,76 +64,118 @@ export default function Signup() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background text-foreground px-4">
-      <Card className="w-full max-w-md bg-card border border-border rounded-xl p-8 shadow-lg space-y-6">
-        <div className="text-center">
-          <h2 className="text-2xl font-semibold">Create Account</h2>
-          <p className="text-muted-foreground text-sm mt-1">
-            Enter your details to sign up
+    <div className="min-h-screen flex items-center justify-center gradient-bg-animated px-4 relative overflow-hidden">
+      {/* Floating Orbs */}
+      <div className="orb orb-1 top-[-120px] right-[-80px]"></div>
+      <div className="orb orb-2 bottom-[-80px] left-[-100px]"></div>
+      <div className="orb orb-3 top-[30%] left-[5%]"></div>
+
+      <div className="w-full max-w-md glass-card rounded-2xl p-8 space-y-6 animate-fadeInUp relative z-10 glow-violet">
+        {/* Brand */}
+        <div className="text-center space-y-2">
+          <Link to="/" className="inline-block">
+            <h1 className="text-3xl font-extrabold">
+              <span className="gradient-text-brand">Vibe</span>
+              <span className="text-foreground">Verse</span>
+              <span className="text-violet-400">.</span>
+            </h1>
+          </Link>
+          <h2 className="text-xl font-semibold text-foreground">Create Account</h2>
+          <p className="text-muted-foreground text-sm">
+            Join the creative community
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <Label htmlFor="username">Username</Label>
-            <Input
-              id="username"
-              type="text"
-              placeholder="Your unique username"
-              value={username}
-              onChange={(e) => setUserName(e.target.value)}
-            />
+            <Label htmlFor="username" className="text-sm font-medium text-muted-foreground mb-1.5 block">Username</Label>
+            <div className="relative">
+              <AtSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                id="username"
+                type="text"
+                placeholder="Your unique username"
+                value={username}
+                onChange={(e) => setUserName(e.target.value)}
+                className="pl-10 bg-white/5 border-white/10 focus:border-violet-500/50 focus:ring-violet-500/20 transition-all duration-300"
+              />
+            </div>
           </div>
 
           <div>
-            <Label htmlFor="name">Full Name</Label>
-            <Input
-              id="name"
-              type="text"
-              placeholder="Your full name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
+            <Label htmlFor="name" className="text-sm font-medium text-muted-foreground mb-1.5 block">Full Name</Label>
+            <div className="relative">
+              <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                id="name"
+                type="text"
+                placeholder="Your full name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="pl-10 bg-white/5 border-white/10 focus:border-violet-500/50 focus:ring-violet-500/20 transition-all duration-300"
+              />
+            </div>
           </div>
 
           <div>
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              placeholder="you@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
+            <Label htmlFor="email" className="text-sm font-medium text-muted-foreground mb-1.5 block">Email</Label>
+            <div className="relative">
+              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                id="email"
+                type="email"
+                placeholder="you@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="pl-10 bg-white/5 border-white/10 focus:border-violet-500/50 focus:ring-violet-500/20 transition-all duration-300"
+              />
+            </div>
           </div>
 
           <div>
-            <Label htmlFor="password">Password</Label>
-            <Input
-              id="password"
-              type="password"
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+            <Label htmlFor="password" className="text-sm font-medium text-muted-foreground mb-1.5 block">Password</Label>
+            <div className="relative">
+              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                id="password"
+                type="password"
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="pl-10 bg-white/5 border-white/10 focus:border-violet-500/50 focus:ring-violet-500/20 transition-all duration-300"
+              />
+            </div>
           </div>
 
-          <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? "Creating account..." : "Sign Up"}
+          <Button 
+            type="submit" 
+            className="w-full btn-gradient-primary text-white font-semibold h-11 gap-2" 
+            disabled={loading}
+          >
+            {loading ? (
+              <div className="h-5 w-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+            ) : (
+              <>
+                Create Account
+                <ArrowRight className="h-4 w-4" />
+              </>
+            )}
           </Button>
         </form>
 
+        <div className="divider-gradient"></div>
+
         <p className="text-sm text-center text-muted-foreground">
           Already have an account?{" "}
-          <Link to="/login" className="text-link hover:underline">
-            Log in
+          <Link to="/login" className="text-violet-400 hover:text-violet-300 font-medium transition-colors">
+            Sign in
           </Link>
         </p>
 
-        <div className="text-center mt-4">
+        <div className="flex justify-center">
           <ModeToggle />
         </div>
-      </Card>
+      </div>
     </div>
   );
 }

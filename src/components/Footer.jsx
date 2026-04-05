@@ -1,13 +1,22 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserCircle, faHome } from '@fortawesome/free-solid-svg-icons';
+import { Home, UserCircle } from 'lucide-react'
 
 function Footer() {
   return (
-    <div className='h-12 mt-20 fixed bottom-0 w-full flex justify-around items-center bg-zinc-900 text-white font-semibold text-lg text-center '>
-      <Link to={'/feed'}><FontAwesomeIcon icon={faHome} size="2x" className=" text-white" /> </Link>
-      <Link to={'/'}> <FontAwesomeIcon icon={faUserCircle} size="2x" className="ytext-white" /> </Link>
+    <div className='h-14 mt-20 fixed bottom-0 w-full flex justify-around items-center glass border-t border-white/[0.06] z-40'>
+      <Link 
+        to={'/feed'} 
+        className="p-2.5 rounded-xl hover:bg-violet-500/10 transition-all duration-200 group"
+      >
+        <Home className="h-6 w-6 text-muted-foreground group-hover:text-violet-400 transition-colors duration-200" />
+      </Link>
+      <Link 
+        to={'/'} 
+        className="p-2.5 rounded-xl hover:bg-violet-500/10 transition-all duration-200 group"
+      >
+        <UserCircle className="h-6 w-6 text-muted-foreground group-hover:text-violet-400 transition-colors duration-200" />
+      </Link>
     </div>
   )
 }
